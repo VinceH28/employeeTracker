@@ -64,3 +64,19 @@ function start() {
         }
       });
   }
+// The add function prompts the user to follow through with adding information to 3 choices or ending the program.
+function add() {
+    inquirer
+      .prompt({
+        name: "add",
+        type: "list",
+        message: "What are you looking to add to? ",
+        choices: 
+        [
+            "Department", 
+            "positions", 
+            "Employees", 
+            "Exit"
+        ],
+      })
+      
