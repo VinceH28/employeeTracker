@@ -163,3 +163,48 @@ function addPosition() {
     );
   });
 }
+
+//Function for adding an employee
+function add() {
+    //Employee table; there are 4 fields that must be addressed. Employee's first and last name. The position id & the manager id. The user will input all four.
+  inquirer
+    .prompt([
+      {
+        name: "first",
+        type: "input",
+        message: "What is the first name of the employee?",
+      },
+      {
+        name: "last",
+        type: "input",
+        message: "What is the last name of the employee?",
+      },
+      {
+        name: "position_id",
+        type: "number",
+        message: "What is the id of the position?",
+      },
+      {
+        name: "manager_id",
+        type: "number",
+        message: "What is the id of the manager?",
+      },
+    ])
+    .then(function (answer) {
+      connection.query(
+        "INSERT INTO employee SET ?",
+        {
+          first_name: answer.first,
+          last_name: answer.last,
+          position_id: answer.position_id,
+          manager_id: answer.manager_id,
+        },
+        function (err) {
+          if (err) throw err;
+          console.log("the employee was created!");
+          console.table(answer)
+          start();
+        }
+      );
+    });
+}
