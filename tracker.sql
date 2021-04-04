@@ -26,3 +26,11 @@ SELECT * FROM company_department
 INSERT INTO positions (title, salary, company_department_id) VALUES ("Worker", 65000, 1);
 INSERT INTO positions (title, salary, company_department_id) VALUES ("Head of HR", 90000, 2);
 INSERT INTO positions (title, salary, company_department_id) VALUES ("Manager",85000, 3);
+
+SELECT positions.id, title, salary, company_department.name AS company_department  FROM positions LEFT JOIN company_department ON positions.company_department_id = company_department.id;
+
+INSERT INTO employee (first_name, last_name, position_id, manager_id) VALUES ("Dexter", "Maddox", 1, 1);
+INSERT INTO employee (first_name, last_name, position_id, manager_id) VALUES ("Jack", "Ellis", 2, 2);
+INSERT INTO employee (first_name, last_name, position_id, manager_id) VALUES ("Joan", "Wheatly", 3, 3);
+
+SELECT employee.id, first_name, last_name, positions.title AS positions  FROM employee LEFT JOIN positions ON employee.position_id = positions.id;
