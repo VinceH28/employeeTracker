@@ -208,3 +208,35 @@ function add() {
       );
     });
 }
+//Function prompts user to follow though with viewinginformation of 3 choices or ending the app
+function view() {
+    inquirer
+    .prompt({
+        name: "vew",
+        type: "list",
+        message: "What would you like to view? ",
+        choixes: 
+        [
+            "Department",
+            "Position",
+            "Employees",
+            "Exit"
+        ],
+    })
+    //each switch statemtn takes the user into a new function
+        .then(function (answer) {
+            switch (answer.view) {
+            case "Department":
+            viewDepartment();
+            break;
+
+            case "Position":
+            viewPosition();
+            break;
+            
+            case "Exit":
+            connection.end();
+            break;
+        }
+    });
+}
