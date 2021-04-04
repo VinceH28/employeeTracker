@@ -34,3 +34,13 @@ INSERT INTO employee (first_name, last_name, position_id, manager_id) VALUES ("J
 INSERT INTO employee (first_name, last_name, position_id, manager_id) VALUES ("Joan", "Wheatly", 3, 3);
 
 SELECT employee.id, first_name, last_name, positions.title AS positions  FROM employee LEFT JOIN positions ON employee.position_id = positions.id;
+
+SELECT e.id, CONCAT(e.first_name, " ", e.last_name) 
+AS employee, positions.title, company_department.name 
+AS company_department, salary, CONCAT(m.first_name, " ", m.last_name) 
+AS manager 
+FROM employee e INNER JOIN positions ON e.position_id=positions.id 
+INNER JOIN company_department on positions.company_department_id=company_department.id 
+LEFT JOIN employee m ON m.id = e.manager_id; 
+
+SELECT id FROM positions WHERE title = "Manager";
