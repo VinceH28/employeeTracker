@@ -74,9 +74,92 @@ function add() {
         choices: 
         [
             "Department", 
-            "positions", 
+            "Positions", 
             "Employees", 
             "Exit"
         ],
       })
-      
+      //Switch statement is used to lead the user to a new function (depending on their choice)
+      .then(function (answer) {
+        switch (answer.add) {
+          case "Department":
+            addDepartment();
+            break;
+  
+          case "positions":
+            addpositions();
+            break;
+  
+          case "Employees":
+            addEmployee();
+            break;
+  
+          case "Exit":
+            connection.end();
+            break;
+        }
+      });
+    }
+
+//Function for adding a department
+function addDepartment() {
+    inquirer
+      .prompt({
+        name: "department",
+        type: "input",
+        message: "Add which department? ",
+      })
+      .then(function (answer) {
+        connection.query(
+          "INSERT INTO company_department (name) VALUES ( ? )",
+          answer.company_department,
+          function (err) {
+            if (err) throw err;
+            console.log(answer.company_department);
+            console.table(answer);
+            start();
+          }
+        );
+      });
+}  
+
+//Below is the function for adding a position
+function addPosition() {
+    //For the positions table, 3 fields must be addressed; title, salary and number. The user must input.
+  inquirer
+  .prompt([
+    {
+      name: "title",
+      type: "input",
+      message: "What is the title of the position?",
+    },
+    {
+      name: "salary",
+      type: "number",
+      message: "What is the person's salary?",
+    },
+    {
+      name: "department_id",
+      type: "number",
+      message: "What is the department id?",
+    },
+  ])
+  .then(function (answer) {
+    //The function inserts a new item into the db
+    connection.query(
+      "INSERT INTO positions SET ?",
+      {
+        title: answer.title,
+        salary: answer.salary,
+        department_id: answer.department_id,
+      },
+      function (err) {
+        if (err) throw err;
+        console.log("the position was created!");
+        console.table(answer);
+
+        start();
+      }
+    );
+  });
+}
