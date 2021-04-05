@@ -74,7 +74,7 @@ function add() {
         choices: 
         [
             "Department", 
-            "Positions", 
+            "position_title", 
             "Employees", 
             "Exit"
         ],
@@ -86,8 +86,8 @@ function add() {
             addDepartment();
             break;
   
-          case "positions":
-            addpositions();
+          case "position_title":
+            addposition_title();
             break;
   
           case "Employees":
@@ -125,7 +125,7 @@ function addDepartment() {
 
 //Below is the function for adding a position
 function addPosition() {
-    //For the positions table, 3 fields must be addressed; title, salary and number. The user must input.
+    //For the position_title table, 3 fields must be addressed; title, salary and number. The user must input.
   inquirer
   .prompt([
     {
@@ -147,7 +147,7 @@ function addPosition() {
   .then(function (answer) {
     //The function inserts a new item into the db
     connection.query(
-      "INSERT INTO positions SET ?",
+      "INSERT INTO position_title SET ?",
       {
         title: answer.title,
         salary: answer.salary,
@@ -239,4 +239,44 @@ function view() {
             break;
         }
     });
+}
+//Function for viewing department table
+function viewDepartment() {
+  connection.query("SELECT * FROM company_department", function (err, results) {
+    if (err) throw err;
+    console.table(results);
+    start();
+  });
+}
+//Funciton to view position_title table
+function viewPosition() {
+  connection.query("SELECT Position.id, title, salary, department.name AS department  FROM position_title LEFT JOIN department ON position_title.department_id = department.id", function (err, results) {
+    if (err) throw err;
+    console.table(results)
+    start();
+  })
+}
+//Funciton to view the position_title table
+function viewPosition() {
+  connection.query("SELECT position_title.id, title, salary, department.name AS department  FROM position_title LEFT JOIN department ON position_title.department_id = department.id", function (err, results) {
+    if (err) throw err;
+    console.table(results)
+    start();
+  })
+}
+//Function to view the employee table
+function viewEmployee() {
+  connection.query(`SELECT e.id, CONCAT(e.first_name, " ", e.last_name) 
+  AS employee, position_title.title, department.name 
+  AS department, salary, CONCAT(m.first_name, " ", m.last_name) 
+  AS manager 
+  FROM employee e INNER JOIN position_title ON e.position_id=position_title.id 
+  INNER JOIN department on position_title.department_id=department.id 
+  LEFT JOIN employee m ON m.id = e.manager_id; 
+  `, function (err, results) {
+    if (err) throw err;
+    console.table(results)
+
+    start();
+  });
 }
