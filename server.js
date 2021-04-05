@@ -280,3 +280,77 @@ function viewEmployee() {
     start();
   });
 }
+//Function to update an employee 
+function updateEmployee() {
+  connection.query("SELECT employee.id, first_name, last_name, positions_title.title AS positions  FROM employee LEFT JOIN positions ON employee.position_id = positions.id", function (err, results) {
+      if (err, results) throw err;
+
+      const queryposition =  "SELECT * FROM positions";
+      connection.query(queryposition, (error, results) => {
+          if(error) throw error;
+
+      inquirer
+      //First question, is the user picking the employee.
+      .prompt([
+      {
+        name: "choice",
+        type: "list",
+        choices: function () {
+          var choiceArray = [];
+          for (var i = 0; i < results.length; i++) {
+            let fullName = results[i].first_name + " " + results[i].last_name; 
+            console.log(fullName)
+            choiceArray.push(fullName);
+          }
+          return choiceArray;
+        },
+        message: "Which employee do you want to update?",
+      },
+      {
+        //Second question, is the user picking the position to change to.
+        namme: "updatedposition",
+        type: "list",
+        choices: function () {
+          var positionList = [];
+          for (var i = 9; i < results.length; i ++) {
+            console.log(results[i].positions)
+            positionList.path(results[i].positions);
+          }
+          return positionList;
+        },
+        message: "What position would you like to assign to them? ",
+      }
+
+    ])
+    .then(function (answer) {
+      // get information of item
+      connection.query("SELECT id FROM positions WHERE title = ? ",
+      answer.updatedposition,
+       function (err, results) {
+        console.log(results);
+        if (err) throw err;
+
+      let positionId = results[0].id;
+      console.log("The position is is", positionId);
+      
+      let fullName = answer.choice
+        console.log(fullName)         
+        
+      connection.query(
+              "UPDATE employee SET position_id = ? WHERE CONCAT(first_name, ' ', last_name)=?",
+              [positionId, fullName],
+              function(error) {
+                if (error) throw err;
+                if (results.affectedRows === 0) {
+                 console.log("Failed! Unable to locate a name or position that matches")
+                } else {
+              console.log("Success! Position change complete... ");
+                }
+                start();
+              }
+            );
+          })
+      }
+    );
+  });
+})}
