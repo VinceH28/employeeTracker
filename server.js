@@ -87,7 +87,7 @@ function add() {
             break;
   
           case "position_title":
-            addposition_title();
+            addPosition_title();
             break;
   
           case "Employees":
