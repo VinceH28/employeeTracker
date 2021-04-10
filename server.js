@@ -1,5 +1,6 @@
-//Dependencies
+require('dotenv').config();
 
+//Dependencies
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 const cTable = require("console.table");
@@ -7,12 +8,11 @@ var figlet = require('figlet');
 
 //Creating the connection between my js file and the schema I made.
 var connection = mysql.createConnection({
-    host: "localhost",
-    port: 3306,
-    user: "root",
-    password: " ",
-    database: "employee_db",
-  });
+  host: process.env.host,
+  user: process.env.username,
+  password: process.env.password,
+  database: process.env.database
+});
 
 //Calling the connection.
 connection.connect(function (err) {
